@@ -1,7 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
 
 const Header = () => {
+  const { user } = useContext(AuthContext);
+  console.log(user);
+
+
+
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
@@ -50,12 +56,21 @@ const Header = () => {
           <li>
             <NavLink to="/">Home</NavLink>
           </li>
-          <li>
-            <NavLink to="/login">Login</NavLink>
-          </li>
-          <li>
-            <NavLink to="/register">Register</NavLink>
-          </li>
+          {!user && (
+            <>
+              <li>
+                <NavLink to="/login">Login</NavLink>
+              </li>
+              <li>
+                <NavLink to="/register">Register</NavLink>
+              </li>
+            </>
+          )}
+          {user && (
+            <li>
+              <NavLink to="/profile">Profile</NavLink>
+            </li>
+          )}
         </ul>
       </div>
     </div>

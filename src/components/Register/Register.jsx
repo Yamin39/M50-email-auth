@@ -1,10 +1,13 @@
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import auth from "../../firebase/firebase.config";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
 
 const Register = () => {
+  const {setUser} = useContext(AuthContext);
+
   const [errorAlert, setErrorAlert] = useState("");
   const [successAlert, setSuccessAlert] = useState("");
   const [showPassToggle, setShowPassToggle] = useState(false);
@@ -51,6 +54,7 @@ const Register = () => {
         })
           .then((result) => {
             console.log(result);
+            setUser(result.user)
           })
           .catch((error) => {
             console.log(error);

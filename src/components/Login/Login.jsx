@@ -1,10 +1,13 @@
 import { sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
 import auth from "../../firebase/firebase.config";
 
 const Login = () => {
+  const { setUser } = useContext(AuthContext);
+
   const [showPassToggle, setShowPassToggle] = useState(false);
   const [errorAlert, setErrorAlert] = useState("");
   const [successAlert, setSuccessAlert] = useState("");
@@ -21,8 +24,10 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         console.log(result.user);
+        setUser(result.user);
         if (result.user.emailVerified) {
           setSuccessAlert("Login successful");
+          e.target.reset();
         } else {
           setErrorAlert("Please verify your email to proceed. An verification email has been sent to your email. Then try to log in again");
           sendEmailVerification(result.user)
