@@ -2,11 +2,11 @@ import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } 
 import { useContext, useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { Link } from "react-router-dom";
-import auth from "../../firebase/firebase.config";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
+import auth from "../../firebase/firebase.config";
 
 const Register = () => {
-  const {setUser} = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
 
   const [errorAlert, setErrorAlert] = useState("");
   const [successAlert, setSuccessAlert] = useState("");
@@ -47,6 +47,7 @@ const Register = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         console.log(result.user);
+        setUser(result.user);
         // update profile
         updateProfile(result.user, {
           displayName: name,
@@ -54,7 +55,6 @@ const Register = () => {
         })
           .then((result) => {
             console.log(result);
-            setUser(result.user)
           })
           .catch((error) => {
             console.log(error);
